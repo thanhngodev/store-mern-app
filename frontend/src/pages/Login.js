@@ -5,6 +5,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import API from '../common';
+import OAuth from '../components/OAuth';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -103,6 +104,7 @@ const Login = () => {
               Sign up
             </Link>
           </p>
+          <OAuth />
         </div>
       </div>
     </section>

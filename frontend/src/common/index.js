@@ -8,6 +8,10 @@ const API = {
     signUp: {
         url: `${backendUrl}/signup`,
         method: "POST"
+    },
+    google: {
+        url: `${backendUrl}/google`,
+        method: "POST"
     }
 }
 

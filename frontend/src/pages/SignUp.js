@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import loginIcons from "../assest/img/signin.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import API from "../common";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileUrl, setImageFileUrl] = useState(null);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -19,34 +29,71 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  const handleUploadPic = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageFileUrl(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (imageFile) {
+      uploadImage();
+    }
+  }, [imageFile]);
+
+  const uploadImage = async () => {
+    const storage = getStorage(app);
+    const filename = new Date().getTime() + imageFile.name;
+    const storageRef = ref(storage, filename);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(progress.toFixed(0));
+      },
+      (error) => {
+        toast.error("Could not upload image");
+        setImageFile(null);
+        setImageFileUrl(null);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFileUrl(downloadURL);
+          setData({...data, profilePic: downloadURL});
+          setImageFile(null);
+          setImageFileUrl(null);
+        });
+      }
+    );
+  };
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setData((preve) => {
-      return {
-        ...preve,
-        [name]: value,
-      };
-    });
+    setData({ ...data, [name]: value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-    if(data.password === data.confirmPassword) {
+    e.preventDefault();
+    if (data.password === data.confirmPassword) {
       const dataRes = await fetch(API.signUp.url, {
         method: API.signUp.method,
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
         },
-        body: JSON.stringify(data)
-      })
+        body: JSON.stringify(data),
+      });
 
       const dataApi = await dataRes.json();
-      if(dataApi.success) {
+      if (dataApi.success) {
         toast.success(dataApi.message);
-        navigate('/login');
+        navigate("/login");
       }
 
-      if(dataApi.error) {
+      if (dataApi.error) {
         toast.error(dataApi.message);
       }
     } else {
@@ -58,9 +105,9 @@ const SignUp = () => {
     <section id="signup">
       <div className="mx-auto container p-4">
         <div className="bg-white p-5 w-full max-w-sm mx-auto">
-          <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
+          <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full cursor-pointer">
             <div>
-              <img src={loginIcons} alt="login icons" />
+              <img src={data.profilePic ? data.profilePic : loginIcons} alt="login icons" />
             </div>
             <form>
               <label>
@@ -70,7 +117,7 @@ const SignUp = () => {
                 <input
                   type="file"
                   className="hidden"
-                  // onChange={handleUploadPic}
+                  onChange={handleUploadPic}
                 />
               </label>
             </form>
@@ -165,6 +212,7 @@ const SignUp = () => {
               Login
             </Link>
           </p>
+          <OAuth />
         </div>
       </div>
     </section>

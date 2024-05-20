@@ -1,6 +1,7 @@
 const userModel = require("../../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const genToken = require("../../helpers/genToken");
 
 async function userSignInController(req, res) {
     try {
@@ -21,7 +22,7 @@ async function userSignInController(req, res) {
         if(!checkPassword) {
             throw new Error("Sign in failed, re-check email and password");
         }
-        const { token, tokenOption } = genToken(user);
+        const { token, tokenOption } = await genToken(user);
         res.cookie("token", token, tokenOption).status(200).json({
             message: "Login successfully",
             data: token,

@@ -8,7 +8,7 @@ async function userSignInGoogleController(req, res) {
         const user = await userModel.findOne({email});
         if(user) {
             // signin 
-            const { token, tokenOption } = genToken(user);
+            const { token, tokenOption } = await genToken(user);
             res.cookie("token", token, tokenOption).status(200).json({
                 message: "Login with google successfully",
                 data: token,
@@ -28,7 +28,7 @@ async function userSignInGoogleController(req, res) {
             })
 
             await newUser.save();
-            const { token, tokenOption } = genToken(newUser);
+            const { token, tokenOption } = await genToken(newUser);
             res.cookie("token", token, tokenOption).status(200).json({
                 message: "Sign up and Sign in with google successfully",
                 data: token,

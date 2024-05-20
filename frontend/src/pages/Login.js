@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import API from '../common';
 import OAuth from '../components/OAuth';
+import Context from '../context';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const { fetchUserDetails } = useContext(Context);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +27,7 @@ const Login = () => {
     e.preventDefault();
     const dataRes = await fetch(API.signIn.url, {
       method: API.signIn.method,
+      credentials: "include",
       headers: {
         "content-type": "application/json"
       },
@@ -34,6 +37,7 @@ const Login = () => {
     const dataApi = await dataRes.json();
     if(dataApi.success) {
       toast.success(dataApi.message);
+      fetchUserDetails();
       navigate('/');
     }
 
@@ -44,7 +48,7 @@ const Login = () => {
   return (
     <section className='h-full flex items-center' id="login">
       <div className="mx-auto container p-4">
-        <div className="bg-white p-5 w-full max-w-sm mx-auto">
+        <div className="bg-white p-5 w-full max-w-sm mx-auto rounded-2xl shadow-md ">
           <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
             <img src={loginIcons} alt="login icons" />
           </div>

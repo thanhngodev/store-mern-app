@@ -1,12 +1,14 @@
 const userModel = require("../../models/userModel");
 const bcrypt = require("bcryptjs");
 
+const ImageDefault = "https://firebasestorage.googleapis.com/v0/b/store-mern-app-249c2.appspot.com/o/1716221842924user.webp?alt=media&token=da27ccbd-266d-438f-a6e5-3e9eb62911f6";
+
 
 async function userSignUpController(req, res) {
     try {
-        const { email, password, name } = req.body;
+        const { email, password, name, profilePic } = req.body;
         const user = await userModel.findOne({ email });
-
+        
         if(user) {
             throw new Error("Already user exists");
         }
@@ -34,8 +36,9 @@ async function userSignUpController(req, res) {
             ...req.body,
             role: 'GENERAL',
             password: hashPassword,
+            profilePic: profilePic ? profilePic : ImageDefault
         }
-        
+
         const useData = new userModel(payload);
         const saveUser = await useData.save();
 

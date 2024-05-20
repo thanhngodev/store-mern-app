@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import loginIcons from "../assest/img/signin.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
@@ -13,12 +13,14 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import OAuth from "../components/OAuth";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [imageFile, setImageFile] = useState(null);
-  const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -28,12 +30,12 @@ const SignUp = () => {
   });
 
   const navigate = useNavigate();
+  const filePickerRef = useRef();
 
-  const handleUploadPic = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setImageFileUrl(URL.createObjectURL(file));
     }
   };
 
@@ -44,6 +46,7 @@ const SignUp = () => {
   }, [imageFile]);
 
   const uploadImage = async () => {
+    debugger;
     const storage = getStorage(app);
     const filename = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, filename);
@@ -51,21 +54,23 @@ const SignUp = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(progress.toFixed(0));
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageFileUploadProgress(progress.toFixed(0));
       },
       (error) => {
         toast.error("Could not upload image");
         setImageFile(null);
-        setImageFileUrl(null);
+        setImageFileUploadProgress(null);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageFileUrl(downloadURL);
-          setData({...data, profilePic: downloadURL});
-          setImageFile(null);
-          setImageFileUrl(null);
+          setTimeout(() => {
+            setData({ ...data, ...{ profilePic: downloadURL } });
+            setImageFile(null);
+          }, 230);
+          setTimeout(() => {
+            setImageFileUploadProgress(null);
+          }, 1000);
         });
       }
     );
@@ -104,23 +109,52 @@ const SignUp = () => {
   return (
     <section id="signup">
       <div className="mx-auto container p-4">
-        <div className="bg-white p-5 w-full max-w-sm mx-auto">
-          <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full cursor-pointer">
-            <div>
-              <img src={data.profilePic ? data.profilePic : loginIcons} alt="login icons" />
-            </div>
-            <form>
-              <label>
-                <div className="text-xs bg-opacity-80 bg-slate-200 pb-4 pt-2 cursor-pointer text-center absolute bottom-0 w-full">
-                  Upload Photo
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleUploadPic}
+        <div className="bg-white p-5 w-full max-w-sm mx-auto rounded-2xl shadow-md ">
+          <div className="flex flex-col gap-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              ref={filePickerRef}
+              hidden
+            />
+            <div
+              className="relative h-24 w-24 self-center cursor-pointer shadow-md overflow-hidden rounded-full"
+              onClick={() => filePickerRef.current.click()}
+            >
+              {imageFileUploadProgress && (
+                <CircularProgressbar
+                  value={imageFileUploadProgress || 0}
+                  text={`${imageFileUploadProgress}%`}
+                  strokeWidth={5}
+                  styles={{
+                    root: {
+                      width: "100%",
+                      height: "100%",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                    },
+                    path: {
+                      stroke: `rgba(62, 152, 199, ${
+                        imageFileUploadProgress / 100
+                      })`,
+                    },
+                  }}
                 />
-              </label>
-            </form>
+              )}
+              <img
+                src={data.profilePic ? data.profilePic : loginIcons}
+                alt="login icons"
+                className={`rounded-full w-full h-full object-cover ${
+                  data.profilePic ? "border-2 border-[lightgray]" : ""
+                } ${
+                  imageFileUploadProgress &&
+                  imageFileUploadProgress < 100 &&
+                  "opacity-60"
+                }`}
+              />
+            </div>
           </div>
 
           <form className="pt-6 flex flex-col gap-2" onSubmit={handleSubmit}>

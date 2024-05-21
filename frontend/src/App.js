@@ -36,7 +36,7 @@ function App() {
 
   return (
     <>
-      <Context.Provider  value={{fetchUserDetails}} >
+      <Context.Provider value={{fetchUserDetails}} >
         <Header />
         <main className="min-h-[calc(100vh-57px)] pt-16">
           <Outlet />

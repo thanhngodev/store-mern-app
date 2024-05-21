@@ -88,7 +88,7 @@ const Header = () => {
             {menuDisplay && (
               <div className="absolute bg-white bottom-0 top-11 h-fit p-2 shadow-lg rounded">
                 <nav>
-                  {/* {user?.role === ROLE.ADMIN && ( */}
+                  {user?.role === ROLE.ADMIN && (
                     <Link
                       to={"/admin-panel/all-products"}
                       className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2"
@@ -96,7 +96,7 @@ const Header = () => {
                     >
                       Admin Panel
                     </Link>
-                  {/* )} */}
+                  )}
                   <Link
                     to={"/profile"}
                     className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2"

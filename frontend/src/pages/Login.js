@@ -48,7 +48,7 @@ const Login = () => {
   return (
     <section className='h-full flex items-center' id="login">
       <div className="mx-auto container p-4">
-        <div className="bg-white p-5 w-full max-w-sm mx-auto rounded-2xl shadow-md ">
+        <div className="bg-white p-3 w-full max-w-sm mx-auto rounded-2xl shadow-lg ">
           <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
             <img src={loginIcons} alt="login icons" />
           </div>
@@ -88,7 +88,7 @@ const Login = () => {
               </div>
               <Link
                 to={"/forgot-password"}
-                className="block w-fit ml-auto hover:underline hover:text-red-600"
+                className="block w-fit ml-auto no-underline hover:underline text-red-600"
               >
                 Forgot password ?
               </Link>
@@ -99,11 +99,11 @@ const Login = () => {
             </button>
           </form>
 
-          <p className="my-5">
+          <p className="my-3">
             Don't have account ?{" "}
             <Link
               to={"/sign-up"}
-              className=" text-red-600 hover:text-red-700 hover:underline"
+              className=" text-red-600 hover:text-red-700 no-underline hover:underline"
             >
               Sign up
             </Link>

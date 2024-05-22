@@ -3,9 +3,11 @@ const userModel = require("../../models/userModel");
 async function userListController(req, res) {
   try {
     const allUsers = await userModel.find();
+    const filteredUsers = allUsers.filter(user => user.id !== req.userId);
+
     res.json({
       message: "All User ",
-      data: allUsers,
+      data: filteredUsers,
       success: true,
       error: false,
     });

@@ -9,11 +9,14 @@ import API from "../common";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
 import ROLE from "../common/role";
+import { Popover } from "@mui/material";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user);
   const [search, setSearch] = useState("");
-  const [menuDisplay, setMenuDisplay] = useState(false);
+  const [menuDisplay, setMenuDisplay] = useState(null);
+
+  const open = Boolean(menuDisplay);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,7 +74,7 @@ const Header = () => {
             {user?._id && (
               <div
                 className="text-3xl cursor-pointer relative flex justify-center"
-                onClick={() => setMenuDisplay(!menuDisplay)}
+                onClick={(e) => setMenuDisplay(e.currentTarget)}
               >
                 {user?.profilePic ? (
                   <img
@@ -84,39 +87,19 @@ const Header = () => {
                 )}
               </div>
             )}
-
-            {menuDisplay && (
-              <div className="absolute bg-white bottom-0 top-11 h-fit p-2 shadow-lg rounded">
-                <nav>
-                  {user?.role === ROLE.ADMIN && (
-                    <Link
-                      to={"/admin-panel/all-products"}
-                      className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2"
-                      onClick={() => setMenuDisplay(!menuDisplay)}
-                    >
-                      Admin Panel
-                    </Link>
-                  )}
-                  <Link
-                    to={"/profile"}
-                    className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2"
-                    onClick={() => setMenuDisplay(!menuDisplay)}
-                  >
-                    Profile
-                  </Link>
-                </nav>
-              </div>
-            )}
           </div>
 
           {/* cart  */}
           {user?._id && (
-            <Link to={"/cart"} className="text-2xl relative">
+            <Link
+              to={"/cart"}
+              className="text-2xl relative no-underline text-black hover:text-black hover:bg-gray-200 p-2 rounded-full"
+            >
               <span>
                 <FaShoppingCart />
               </span>
-              <div className="bg-red-600 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-3">
-                <p className="text-sm">10</p>
+              <div className="bg-red-600 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-1 -right-2">
+                <span className="text-sm">10</span>
               </div>
             </Link>
           )}
@@ -125,14 +108,14 @@ const Header = () => {
             {user?._id ? (
               <button
                 onClick={handleLogout}
-                className="px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 shadow-lg"
+                className="no-underline px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 shadow-lg"
               >
                 Logout
               </button>
             ) : (
               <Link
                 to={"/login"}
-                className="px-3 py-1 rounded-lg text-white bg-red-600 hover:bg-red-700 cursor-pointer flex items-center justify-center shadow-lg"
+                className="no-underline px-3 py-1 rounded-lg text-white bg-red-600 hover:bg-red-700 cursor-pointer flex items-center justify-center shadow-lg"
               >
                 Login
               </Link>
@@ -140,6 +123,39 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      <Popover
+        open={open}
+        anchorEl={menuDisplay}
+        onClose={() => setMenuDisplay(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <nav>
+          {user?.role === ROLE.ADMIN && (
+            <Link
+              to={"/admin-panel/all-products"}
+              className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"
+              onClick={() => setMenuDisplay(null)}
+            >
+              Admin Panel
+            </Link>
+          )}
+          <Link
+            to={"/profile"}
+            className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"
+            onClick={() => setMenuDisplay(null)}
+          >
+            Profile
+          </Link>
+        </nav>
+      </Popover>
     </header>
   );
 };

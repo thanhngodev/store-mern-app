@@ -108,7 +108,7 @@ const SignUp = () => {
   return (
     <section id="signup">
       <div className="mx-auto container p-4">
-        <div className="bg-white p-5 w-full max-w-sm mx-auto rounded-2xl shadow-md ">
+        <div className="bg-white p-4 w-full max-w-sm mx-auto rounded-2xl shadow-lg ">
           <div className="flex flex-col gap-4">
             <input
               type="file"
@@ -236,11 +236,11 @@ const SignUp = () => {
             </button>
           </form>
 
-          <p className="my-5">
+          <p className="my-4">
             Already have account ?{" "}
             <Link
               to={"/login"}
-              className=" text-red-600 hover:text-red-700 hover:underline"
+              className=" text-red-600 hover:text-red-700 no-underline hover:underline"
             >
               Login
             </Link>

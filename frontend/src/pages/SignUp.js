@@ -46,7 +46,6 @@ const SignUp = () => {
   }, [imageFile]);
 
   const uploadImage = async () => {
-    debugger;
     const storage = getStorage(app);
     const filename = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, filename);

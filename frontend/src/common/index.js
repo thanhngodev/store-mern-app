@@ -19,7 +19,15 @@ const API = {
   },
   logout_user: {
     url: `${backendUrl}/userLogout`,
-    method: "GET"
+    method: "GET",
+  },
+  allUser: {
+    url: `${backendUrl}/all-user`,
+    method: "get",
+  },
+  updateUser: {
+    url: `${backendUrl}/update-user`,
+    method: "post",
   }
 };
 

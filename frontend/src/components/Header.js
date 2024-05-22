@@ -76,7 +76,7 @@ const Header = () => {
                 {user?.profilePic ? (
                   <img
                     src={user?.profilePic}
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 rounded-full shadow-lg"
                     alt={user?.name}
                   />
                 ) : (
@@ -125,14 +125,14 @@ const Header = () => {
             {user?._id ? (
               <button
                 onClick={handleLogout}
-                className="px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700"
+                className="px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700 shadow-lg"
               >
                 Logout
               </button>
             ) : (
               <Link
                 to={"/login"}
-                className="px-3 py-1 rounded-lg text-white bg-red-600 hover:bg-red-700 cursor-pointer flex items-center justify-center "
+                className="px-3 py-1 rounded-lg text-white bg-red-600 hover:bg-red-700 cursor-pointer flex items-center justify-center shadow-lg"
               >
                 Login
               </Link>

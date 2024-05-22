@@ -23,11 +23,15 @@ const API = {
   },
   allUser: {
     url: `${backendUrl}/all-user`,
-    method: "get",
+    method: "GET",
   },
   updateUser: {
     url: `${backendUrl}/update-user`,
-    method: "post",
+    method: "POST",
+  },
+  deleteUser: {
+    url: `${backendUrl}/delete-user`,
+    method: "DELETE",
   }
 };
 

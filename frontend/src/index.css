@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "./assest/scss/_bootstrap.css";
 
 
 body {
@@ -18,3 +19,4 @@ code {
 }
 
 @import "./assest/scss/common.css";
+@import "./assest/scss/table.css";

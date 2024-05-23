@@ -138,7 +138,7 @@ const Header = () => {
         }}
       >
         <nav>
-          {user?.role === ROLE.ADMIN && (
+          {/* {user?.role === ROLE.ADMIN && ( */}
             <Link
               to={"/admin-panel/all-products"}
               className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"
@@ -146,7 +146,7 @@ const Header = () => {
             >
               Admin Panel
             </Link>
-          )}
+          {/* )} */}
           <Link
             to={"/profile"}
             className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"

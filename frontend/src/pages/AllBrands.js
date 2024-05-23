@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import API from "../common";
-import { toast } from "react-toastify";
-import moment from "moment";
-import { MdModeEdit, MdDelete } from "react-icons/md";
-import ChangeUserRole from "../components/ChangeUserRole";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,6 +6,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import Switch from '@mui/material/Switch';
+import CreateOrDetailBrand from "../components/CreateOrDetailBrand";
+import API from "../common";
+import { toast } from "react-toastify";
+import moment from "moment";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 
 const style = {
   position: "absolute",
@@ -26,42 +27,44 @@ const style = {
   padding: "24px",
 };
 
-const AllUsers = () => {
-  const [allUser, setAllUsers] = useState([]);
-  const [openUpdateRole, setOpenUpdateRole] = useState(false);
-  const [updateUserDetails, setUpdateUserDetails] = useState(null);
-  const [deleteUser, setDeleteUser] = useState(null);
+const AllBrands = () => {
+  const [allBrands, setAllBrands] = useState([]);
 
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [deleteBrand, setDeleteBrand] = useState(null);
 
-  const fetchAllUsers = async () => {
-    const fetchData = await fetch(API.allUser.url, {
-      method: API.allUser.method,
+  const [openAddBrand, setOpenAddBrand] = useState(false);
+  const [updateBrandDetails, setUpdateBrandDetails] = useState(null);
+
+  const fetchAllBrands = async () => {
+    const fetchData = await fetch(API.getBrand.url, {
+      method: API.getBrand.method,
       credentials: "include",
     });
-
     const dataResponse = await fetchData.json();
-
     if (dataResponse.success) {
-      setAllUsers(dataResponse.data);
+      setAllBrands(dataResponse.data);
     }
-
     if (dataResponse.error) {
       toast.error(dataResponse.message);
     }
   };
 
-  const handleDeleteUsers = async () => {
-    const fetchData = await fetch(API.deleteUser.url + `/${deleteUser._id}`, {
-      method: API.deleteUser.method,
+  useEffect(() => {
+    fetchAllBrands();
+  }, []);
+
+  const handleDeleteBrands = async () => {
+    const fetchData = await fetch(API.deleteBrand.url + `/${deleteBrand._id}`, {
+      method: API.deleteBrand.method,
       credentials: "include",
     });
 
     const dataResponse = await fetchData.json();
 
     if (dataResponse.success) {
-      fetchAllUsers();
-      setDeleteUser(null);
+      fetchAllBrands();
+      setDeleteBrand(null);
       setOpenConfirm(false);
       toast.success(dataResponse.message);
     }
@@ -71,14 +74,23 @@ const AllUsers = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
+  // const handleChangeStatusBrand = (index) = (event) => {
+  //   console.log(index, event.target.checked);
+  // }
 
   return (
     <>
-      <div className="mb-3 font-bold text-xl">Users Management</div>
-      {allUser && allUser.length > 0 ? (
+      <div className="mb-3 flex justify-between items-center">
+        <div className=" font-bold text-xl">Brands Management</div>
+        <button
+          className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-all py-1 px-3 rounded-full "
+          onClick={() => setOpenAddBrand(true)}
+        >
+          Add Brand
+        </button>
+      </div>
+
+      {allBrands && allBrands.length > 0 ? (
         <>
           <div className="table-wrapper">
             <table className="fl-table">
@@ -86,39 +98,45 @@ const AllUsers = () => {
                 <tr>
                   <th>No</th>
                   <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Created Date</th>
+                  <th>Code</th>
+                  <th>Updated Date</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {allUser.map((el, index) => {
+                {allBrands.map((el, index) => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{el.name || ""}</td>
-                      <td>{el.email || ""}</td>
-                      <td>{el.role || ""}</td>
+                      <td>{el.code || ""}</td>
                       <td>
-                        {el.createdAt
-                          ? moment(el.createdAt).format("DD/MM/YYYY HH:mm")
+                        {el.updatedAt
+                          ? moment(el.updatedAt).format("DD/MM/YYYY HH:mm")
                           : ""}
+                      </td>
+                      <td>
+                        <Switch
+                          checked={el.status}
+                          // onChange={handleChangeStatusBrand(index)}
+                          inputProps={{ "aria-label": "controlled" }}
+                        />
                       </td>
                       <td>
                         <button
                           className="bg-green-100 p-2 rounded-full cursor-pointer hover:bg-green-500 hover:text-white mr-2"
-                          onClick={() => {
-                            setUpdateUserDetails(el);
-                            setOpenUpdateRole(true);
-                          }}
+                          // onClick={() => {
+                          //   setUpdateUserDetails(el);
+                          //   setOpenUpdateRole(true);
+                          // }}
                         >
                           <MdModeEdit />
                         </button>
                         <button
                           className="bg-red-100 p-2 rounded-full cursor-pointer hover:bg-red-500 hover:text-white"
                           onClick={() => {
-                            setDeleteUser(el);
+                            setDeleteBrand(el);
                             setOpenConfirm(true);
                           }}
                         >
@@ -136,34 +154,16 @@ const AllUsers = () => {
         <div>Users Empty</div>
       )}
 
-      <Modal
-        open={openUpdateRole}
-        onClose={() => {
-          setOpenUpdateRole(false);
-          setUpdateUserDetails(null);
-        }}
-      >
+      <Modal open={openAddBrand} onClose={() => setOpenAddBrand(false)}>
         <Box sx={style}>
-          {updateUserDetails && (
-            <ChangeUserRole
-              onClose={() => {
-                setOpenUpdateRole(false);
-                setUpdateUserDetails(null);
-              }}
-              name={updateUserDetails.name}
-              email={updateUserDetails.email}
-              role={updateUserDetails.role}
-              userId={updateUserDetails._id}
-              callFunc={fetchAllUsers}
-            />
-          )}
+          <CreateOrDetailBrand openModal={openAddBrand} />
         </Box>
       </Modal>
 
       <Dialog
         open={openConfirm}
         onClose={() => {
-          setDeleteUser(null);
+          setDeleteBrand(null);
           setOpenConfirm(false);
         }}
         aria-labelledby="alert-dialog-title"
@@ -171,25 +171,25 @@ const AllUsers = () => {
         classes={{ container: "dialog-custom-confirm" }}
       >
         <DialogTitle id="alert-dialog-title">
-          {deleteUser
-            ? `Are you sure to delete this user ${deleteUser.email}?`
+          {deleteBrand
+            ? `Are you sure to delete this brand ${deleteBrand.name}?`
             : ""}
         </DialogTitle>
         <DialogActions>
           <Button
             onClick={() => {
-              setDeleteUser(null);
+              setDeleteBrand(null);
               setOpenConfirm(false);
             }}
             autoFocus
           >
             No
           </Button>
-          <Button onClick={handleDeleteUsers}>Yes</Button>
+          <Button onClick={handleDeleteBrands}>Yes</Button>
         </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default AllUsers;
+export default AllBrands;

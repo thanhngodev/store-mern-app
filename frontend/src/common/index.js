@@ -32,6 +32,27 @@ const API = {
   deleteUser: {
     url: `${backendUrl}/delete-user`,
     method: "DELETE",
+  },
+  // brand 
+  getBrand: {
+    url: `${backendUrl}/brand`,
+    method: "GET",
+  },
+  getBrandDetails: {
+    url: `${backendUrl}/brand`,
+    method: "GET",
+  },
+  createBrand: {
+    url: `${backendUrl}/brand/create`,
+    method: "POST",
+  },
+  updateBrand: {
+    url: `${backendUrl}/brand/update`,
+    method: "PUT",
+  },
+  deleteBrand: {
+    url: `${backendUrl}/brand`,
+    method: "DELETE",
   }
 };
 

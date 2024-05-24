@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 import CreateOrDetailBrand from "../components/CreateOrDetailBrand";
 import API from "../common";
 import { toast } from "react-toastify";
@@ -34,7 +34,7 @@ const AllBrands = () => {
   const [deleteBrand, setDeleteBrand] = useState(null);
 
   const [openAddBrand, setOpenAddBrand] = useState(false);
-  const [updateBrandDetails, setUpdateBrandDetails] = useState(null);
+  const [brandDetails, setBrandDetails] = useState(null);
 
   const fetchAllBrands = async () => {
     const fetchData = await fetch(API.getBrand.url, {
@@ -74,9 +74,31 @@ const AllBrands = () => {
     }
   };
 
-  // const handleChangeStatusBrand = (index) = (event) => {
-  //   console.log(index, event.target.checked);
-  // }
+  const handleChangeStatusBrand = async (event, itemUPdate) => {
+    const fetchData = await fetch(API.updateBrand.url + `/${itemUPdate._id}`, {
+      method: API.updateBrand.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        code: itemUPdate.code,
+        name: itemUPdate.name,
+        status: event.target.checked,
+      }),
+    });
+
+    const dataResponse = await fetchData.json();
+
+    if (dataResponse.success) {
+      fetchAllBrands();
+      toast.success(dataResponse.message);
+    }
+
+    if (dataResponse.error) {
+      toast.error(dataResponse.message);
+    }
+  };
 
   return (
     <>
@@ -119,17 +141,19 @@ const AllBrands = () => {
                       <td>
                         <Switch
                           checked={el.status}
-                          // onChange={handleChangeStatusBrand(index)}
+                          onChange={(event) =>
+                            handleChangeStatusBrand(event, el)
+                          }
                           inputProps={{ "aria-label": "controlled" }}
                         />
                       </td>
                       <td>
                         <button
                           className="bg-green-100 p-2 rounded-full cursor-pointer hover:bg-green-500 hover:text-white mr-2"
-                          // onClick={() => {
-                          //   setUpdateUserDetails(el);
-                          //   setOpenUpdateRole(true);
-                          // }}
+                          onClick={() => {
+                            setBrandDetails(el);
+                            setOpenAddBrand(true);
+                          }}
                         >
                           <MdModeEdit />
                         </button>
@@ -154,9 +178,20 @@ const AllBrands = () => {
         <div>Users Empty</div>
       )}
 
-      <Modal open={openAddBrand} onClose={() => setOpenAddBrand(false)}>
+      <Modal open={openAddBrand} onClose={() => {
+        setOpenAddBrand(false);
+        setBrandDetails(null);
+      }}>
         <Box sx={style}>
-          <CreateOrDetailBrand openModal={openAddBrand} />
+          <CreateOrDetailBrand
+            openModal={openAddBrand}
+            brandDetails={brandDetails}
+            onClose={() => {
+              setOpenAddBrand(false);
+              setBrandDetails(null);
+            }}
+            callFunc={fetchAllBrands}
+          />
         </Box>
       </Modal>
 

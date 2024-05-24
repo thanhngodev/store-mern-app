@@ -92,8 +92,6 @@ const AllBrands = () => {
 
     if (dataResponse.success) {
       fetchAllBrands();
-      setDeleteBrand(null);
-      setOpenConfirm(false);
       toast.success(dataResponse.message);
     }
 
@@ -188,6 +186,10 @@ const AllBrands = () => {
           <CreateOrDetailBrand
             openModal={openAddBrand}
             brandDetails={brandDetails}
+            onClose={() => {
+              setOpenAddBrand(false);
+              setBrandDetails(null);
+            }}
             callFunc={fetchAllBrands}
           />
         </Box>

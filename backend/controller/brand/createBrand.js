@@ -2,8 +2,9 @@ const brandModel = require("../../models/brandModel");
 
 async function brandCreateController(req, res) {
   try {
-    const { name, code } = req.body;
+    const { name, code, status } = req.body;
     const brand = await brandModel.findOne({ code });
+    const patternCode = /^[a-zA-Z0-9]+$/;
 
     if (brand) {
       throw new Error("Already brand exists");
@@ -17,7 +18,11 @@ async function brandCreateController(req, res) {
       throw new Error("Please enter a valid code");
     }
 
-    const brandData = new brandModel({ name, code });
+    if(!patternCode.test(code)) {
+        throw new Error("The value of the Code field is invalid, please re-enter.");
+    }
+
+    const brandData = new brandModel({ name, code, status });
     const saveBrand = await brandData.save();
 
     res.status(201).json({

@@ -17,9 +17,23 @@
   }
 }
 
-
 .dialog-custom-comfirm {
   .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded {
     border-radius: 12px;
+  }
+}
+
+.shadow-full-37 {
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.37);
+  -webkit-box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.37);
+  -moz-box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.37);
+}
+
+.product-image {
+  &-icon {
+    position: relative;
+    right: 30px;
+    top: 8px;
+    cursor: pointer;
   }
 }

@@ -12,14 +12,13 @@ const ChangeUserRole = ({ name, email, role, userId, onClose, callFunc }) => {
   };
 
   const updateUserRole = async () => {
-    const fetchResponse = await fetch(API.updateUser.url, {
+    const fetchResponse = await fetch(API.updateUser.url + `/${userId}`, {
       method: API.updateUser.method,
       credentials: "include",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        userId: userId,
         role: userRole,
       }),
     });

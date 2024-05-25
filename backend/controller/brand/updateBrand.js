@@ -1,4 +1,5 @@
 const brandModel = require("../../models/brandModel");
+const productModel = require("../../models/productModel");
 
 async function brandUpdateController(req, res) {
   const { id } = req.params;
@@ -28,6 +29,21 @@ async function brandUpdateController(req, res) {
       },
       { new: true, runValidators: true }
     );
+
+    if (!status) {
+      const products = await productModel
+        .find({ brand: id })
+        .populate("brand");
+      await Promise.all(
+        products.map(async (product) => {
+          return await productModel.findByIdAndUpdate(
+            product._id,
+            { status: false },
+            { new: true, runValidators: true }
+          );
+        })
+      );
+    }
 
     if (!updateBrand) {
       return res.status(404).json({

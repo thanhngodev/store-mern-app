@@ -19,14 +19,17 @@ const CreateOrDetailBrand = ({ brandDetails = null, onClose, callFunc }) => {
 
   const fetchUpdate = async () => {
     try {
-      const response = await fetch(API.updateBrand.url + `/${brandDetails._id}`, {
-        method: API.updateBrand.method,
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        API.updateBrand.url + `/${brandDetails._id}`,
+        {
+          method: API.updateBrand.method,
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -67,7 +70,9 @@ const CreateOrDetailBrand = ({ brandDetails = null, onClose, callFunc }) => {
     e.preventDefault();
 
     try {
-      const dataResponse = brandDetails ? await fetchUpdate() : await fetchCreate();
+      const dataResponse = brandDetails
+        ? await fetchUpdate()
+        : await fetchCreate();
 
       if (dataResponse.success) {
         callFunc();
@@ -85,13 +90,16 @@ const CreateOrDetailBrand = ({ brandDetails = null, onClose, callFunc }) => {
 
   return (
     <div>
+      <div className="font-bold text-xl">
+        {brandDetails ? "Edit/Detail " : "Create "} Brand
+      </div>
       <form className="pt-6 flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="grid">
-          <label>Code: </label>
+          <label>Brand Code: </label>
           <div className="bg-slate-100 rounded-xl p-2">
             <input
               type="text"
-              placeholder="Enter your name"
+              placeholder="Enter your code"
               name="code"
               value={data.code}
               onChange={(event) => handleOnChange(event, "code")}
@@ -102,7 +110,7 @@ const CreateOrDetailBrand = ({ brandDetails = null, onClose, callFunc }) => {
         </div>
 
         <div className="grid">
-          <label>name: </label>
+          <label>Brand Name: </label>
           <div className="bg-slate-100 rounded-xl p-2">
             <input
               type="text"

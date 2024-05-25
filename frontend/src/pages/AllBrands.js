@@ -37,8 +37,8 @@ const AllBrands = () => {
   const [brandDetails, setBrandDetails] = useState(null);
 
   const fetchAllBrands = async () => {
-    const fetchData = await fetch(API.getBrand.url, {
-      method: API.getBrand.method,
+    const fetchData = await fetch(API.getBrandAdmin.url, {
+      method: API.getBrandAdmin.method,
       credentials: "include",
     });
     const dataResponse = await fetchData.json();
@@ -175,7 +175,7 @@ const AllBrands = () => {
           </div>
         </>
       ) : (
-        <div>Users Empty</div>
+        <div>Brand Empty</div>
       )}
 
       <Modal open={openAddBrand} onClose={() => {

@@ -57,7 +57,6 @@ const OAuth = () => {
       onClick={handleGoogle}
       className={`button-google ${!isLoading ? "active" : ""}`}
     >
-      {isLoading}
       <img src={iconGoogle} alt="google icon" className="w-6 h-6 mr-2" />
       Continue with Google
     </div>

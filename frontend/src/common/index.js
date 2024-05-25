@@ -27,33 +27,62 @@ const API = {
   },
   updateUser: {
     url: `${backendUrl}/update-user`,
-    method: "POST",
+    method: "PUT",
   },
   deleteUser: {
     url: `${backendUrl}/delete-user`,
     method: "DELETE",
   },
   // brand 
+  getBrandAdmin: {
+    url: `${backendUrl}/admin/brand`,
+    method: "GET",
+  },
   getBrand: {
     url: `${backendUrl}/brand`,
     method: "GET",
   },
   getBrandDetails: {
-    url: `${backendUrl}/brand`,
+    url: `${backendUrl}/admin/brand`,
     method: "GET",
   },
   createBrand: {
-    url: `${backendUrl}/brand/create`,
+    url: `${backendUrl}/admin/brand/create`,
     method: "POST",
   },
   updateBrand: {
-    url: `${backendUrl}/brand/update`,
+    url: `${backendUrl}/admin/brand/update`,
     method: "PUT",
   },
   deleteBrand: {
-    url: `${backendUrl}/brand`,
+    url: `${backendUrl}/admin/brand`,
     method: "DELETE",
-  }
+  },
+  // product
+  getProductAdmin: {
+    url: `${backendUrl}/admin/product`,
+    method: "GET",
+  },
+  getProduct: {
+    url: `${backendUrl}/product`,
+    method: "GET",
+  },
+  getProductDetails: {
+    url: `${backendUrl}/admin/product`,
+    method: "GET",
+  },
+  createProduct: {
+    url: `${backendUrl}/admin/product/create`,
+    method: "POST",
+  },
+  updateProduct: {
+    url: `${backendUrl}/admin/product/update`,
+    method: "PUT",
+  },
+  deleteProduct: {
+    url: `${backendUrl}/admin/product`,
+    method: "DELETE",
+  },
 };
 
 export default API;

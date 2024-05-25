@@ -2,8 +2,6 @@ const userModel = require("../../models/userModel");
 
 async function userUpdateController(req, res) {
   try {
-    const sessionUser = req.userId;
-
     const { userId, email, name, role } = req.body;
 
     const payload = {
@@ -12,9 +10,7 @@ async function userUpdateController(req, res) {
       ...(role && { role: role }),
     };
 
-    const user = await userModel.findById(sessionUser);
-
-    const updateUser = await userModel.findByIdAndUpdate(userId, payload);
+    const updateUser = await userModel.findByIdAndUpdate(req.params.userId, payload);
 
     res.json({
       data: updateUser,

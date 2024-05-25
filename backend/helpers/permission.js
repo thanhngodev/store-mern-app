@@ -1,13 +1,21 @@
 const userModel = require("../models/userModel");
 
 const uploadProductPermission = async (userId) => {
-  const user = await userModel.findById(userId);
-
-  if (user.role === "ADMIN") {
-    return true;
+  try {
+    const user = await userModel.findById(userId);
+    console.log(user);
+    if (!user) {
+      return false;
+    }
+    if (user.role === "ADMIN") {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error while checking permission:", error);
+    return false;
   }
-
-  return false;
 };
 
 module.exports = uploadProductPermission;

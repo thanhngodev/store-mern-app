@@ -68,7 +68,7 @@ const API = {
     method: "GET",
   },
   getProductDetails: {
-    url: `${backendUrl}/admin/product`,
+    url: `${backendUrl}/product`,
     method: "GET",
   },
   createProduct: {
@@ -83,6 +83,10 @@ const API = {
     url: `${backendUrl}/admin/product`,
     method: "DELETE",
   },
+  getProducts: {
+    url: `${backendUrl}/products`,
+    method: "GET",
+  }
 };
 
 export default API;

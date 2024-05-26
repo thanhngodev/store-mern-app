@@ -23,6 +23,7 @@ const productAllController = require("../controller/product/getAllProducts");
 const productDetailsController = require("../controller/product/getProductDetails");
 const brandListUserController = require("../controller/brand/getUserListBrand");
 const productAllUserController = require("../controller/product/getAllProductUser");
+const getProductListController = require("../controller/product/getProductList");
 
 //#region user
 router.post("/signup", userSignUpController);
@@ -35,7 +36,7 @@ router.get("/userLogout", userLogout);
 
 //#region brand
 router.get("/admin/brand", authToken, brandListController);
-router.get("/brand", authToken, brandListUserController);
+router.get("/brand", brandListUserController);
 router.get("/brand/:id", authToken, brandDetailsController);
 router.post("/admin/brand/create", authToken, brandCreateController);
 router.put("/admin/brand/update/:id", authToken, brandUpdateController);
@@ -45,7 +46,8 @@ router.delete("/admin/brand/:id", authToken, brandDeleteController);
 //#region product
 router.get("/admin/product", authToken, productAllController);
 router.get("/product", authToken, productAllUserController);
-router.get("/product/:productId", authToken, productDetailsController);
+router.get("/products", getProductListController);
+router.get("/product/:productId", productDetailsController);
 router.post("/admin/product/create", authToken, productCreateController);
 router.put("/admin/product/update/:productId", authToken, productUpdateController);
 router.delete("/admin/product/:productId", authToken, deleteProductController);

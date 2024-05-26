@@ -323,7 +323,7 @@ const CreateOrDetailProduct = ({
                     <>
                       <div className="row gx-4 gy-2">
                         {data.productImage.map((image, index) => (
-                          <div className="mb-2 col-12 col-md-6 product-image">
+                          <div className="mb-2 col-12 col-md-6 product-image" key={index} >
                             <div className="flex">
                               <img
                                 src={image}

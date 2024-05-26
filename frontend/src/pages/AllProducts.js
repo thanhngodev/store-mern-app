@@ -152,7 +152,7 @@ const AllProducts = () => {
                             alt={"product image " + el.name}
                           />
                         </td>
-                        <td>{el.brand && el.brand.name && el.brand.name}</td>
+                        <td>{el.brand && el.brand.name}</td>
                         <td>{formatCurrencyVND(el.price) || ""}</td>
                         <td>
                           <Switch

@@ -22,14 +22,14 @@ const HorizontalCardProduct = ({
   brand,
   size = 10,
   heading,
-  isBrand = false,
+  isBrand = false
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     setLoading(true);
-    let queryParams = `size=${size}`;
+    let queryParams = `limit=${size}`;
     if (isBrand) {
       queryParams += `&brandCode=${brand}`;
     }
@@ -57,7 +57,7 @@ const HorizontalCardProduct = ({
         <div>
           <Swiper
             modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-            spaceBetween={50}
+            spaceBetween={24}
             slidesPerView={4}
             autoplay={{
               delay: 3000,
@@ -70,6 +70,17 @@ const HorizontalCardProduct = ({
             }}
             navigation
             pagination={{ clickable: true }}
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
             className="card-product py-2 h-full"
           >
             {data &&
@@ -81,12 +92,12 @@ const HorizontalCardProduct = ({
               ))}
           </Swiper>
 
-          <div className="flex w-full items-center justify-center">
+          <div className="flex w-full items-center justify-center mt-2">
             <Link
-              to={"/product"}
+              to={`/product${isBrand ? `?brandCode=${brand}&limit=1000` : ""}`}
               className="block w-fit no-underline hover:underline text-red-600"
             >
-              Show More
+              {isBrand ? "Show More" : "All Product"}
             </Link>
           </div>
         </div>

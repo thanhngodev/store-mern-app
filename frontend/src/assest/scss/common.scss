@@ -39,7 +39,7 @@
 }
 
 .banner {
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   &-swiper {
     width: 100%;
@@ -52,7 +52,7 @@
   }
 }
 
-@media screen and (max-width: 1024px) { 
+@media screen and (max-width: 1024px) {
   .banner {
     width: 100%;
   }
@@ -66,21 +66,21 @@
   text-overflow: ellipsis;
 }
 
-.swiper {
-  width: 100%;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
-
-  &-slide {
-    background-size: cover;
-    background-position: center;
-  }
-}
-
 .image-slide-product {
   height: 80%;
   width: 100%;
+
+  &.swiper {
+    width: 100%;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &-slide {
+      background-size: cover;
+      background-position: center;
+    }
+  }
 
   .swiper-slide {
     img {

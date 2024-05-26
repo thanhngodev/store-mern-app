@@ -57,7 +57,7 @@ const Header = () => {
   };
 
   return (
-    <header className=" shadow-md bg-white fixed w-full z-40">
+    <header className=" shadow-md bg-white fixed w-full z-40 h-16">
       <div className="h-full container mx-auto flex items-center px-4 justify-between">
         {/* logo  */}
         <div className="">
@@ -92,7 +92,9 @@ const Header = () => {
             {user?._id && (
               <div
                 className="text-3xl cursor-pointer relative flex justify-center"
-                onClick={(e) => setMenuDisplay(e.currentTarget)}
+                onClick={(e) =>
+                  user?.role === ROLE.ADMIN && setMenuDisplay(e.currentTarget)
+                }
               >
                 {user?.profilePic ? (
                   <img
@@ -156,22 +158,22 @@ const Header = () => {
         }}
       >
         <nav>
-          {user?.role === ROLE.ADMIN && (
-            <Link
-              to={"/admin-panel/all-products"}
-              className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"
-              onClick={() => setMenuDisplay(null)}
-            >
-              Admin Panel
-            </Link>
-          )}
+          {/* {user?.role === ROLE.ADMIN && ( */}
           <Link
+            to={"/admin-panel/all-products"}
+            className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"
+            onClick={() => setMenuDisplay(null)}
+          >
+            Admin Panel
+          </Link>
+          {/* )} */}
+          {/* <Link
             to={"/profile"}
             className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 no-underline text-black"
             onClick={() => setMenuDisplay(null)}
           >
             Profile
-          </Link>
+          </Link> */}
         </nav>
       </Popover>
     </header>

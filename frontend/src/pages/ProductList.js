@@ -11,7 +11,10 @@ const ProductList = () => {
 
   const fetchProduct = async () => {
     setLoading(true);
-    const response = await fetch(`${API.getProducts.url}${query.search}`);
+    const urlDefault = `?limit=1000`;
+    const response = await fetch(
+      `${API.getProducts.url}${query.search ? query.search : urlDefault}`
+    );
     const dataResponse = await response.json();
     setLoading(false);
     setData(dataResponse.data);
@@ -33,7 +36,7 @@ const ProductList = () => {
       ) : (
         <>
           {data && data.length > 0 ? (
-            <div className="row gy-4" >
+            <div className="row gy-4">
               {data.map((product, index) => (
                 <div key={index} className="col-6 col-xs-4 col-lg-3 col-xxl-2 ">
                   <ProductCard product={product} />

@@ -19,7 +19,7 @@ const BannerProduct = () => {
   const desktopImages = BANNER_IMAGE;
 
   return (
-    <div className="banner">
+    <div className="banner shadow-xl">
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
         spaceBetween={50}

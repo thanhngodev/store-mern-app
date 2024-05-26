@@ -51,13 +51,11 @@ const CreateOrDetailProduct = ({
   }, [imageFiles]);
 
   const uploadImage = async () => {
-    console.log(imageFiles);
     imageFiles.forEach((imageFile, index) => {
       const storage = getStorage(app);
       const filename = new Date().getTime() + imageFile.name;
       const storageRef = ref(storage, filename);
       const uploadTask = uploadBytesResumable(storageRef, imageFile);
-      console.log(filename);
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -160,7 +158,6 @@ const CreateOrDetailProduct = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data);
     try {
       const dataResponse = productDetails
         ? await fetchUpdate()

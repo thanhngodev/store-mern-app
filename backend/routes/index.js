@@ -24,12 +24,14 @@ const productDetailsController = require("../controller/product/getProductDetail
 const brandListUserController = require("../controller/brand/getUserListBrand");
 const productAllUserController = require("../controller/product/getAllProductUser");
 const getProductListController = require("../controller/product/getProductList");
+const userProfileController = require("../controller/user/userProfile");
 
 //#region user
 router.post("/signup", userSignUpController);
 router.post("/signin", userSignInController);
 router.post("/google", userSignInGoogleController);
 router.get("/user-details", authToken, userDetailsController);
+router.get("/profile", authToken, userProfileController);
 router.get("/userLogout", userLogout);
 //#endregion user
 

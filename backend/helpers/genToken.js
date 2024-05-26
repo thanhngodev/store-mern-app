@@ -5,7 +5,7 @@ async function genToken(userData) {
         _id: userData._id,
         email: userData.email,
     }
-    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: 60*60*8 } );
+    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: 60*60*24 } );
     const tokenOption = {
         httpOnly: true,
         secure: true

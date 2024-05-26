@@ -2,7 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 
-// import controller
 const userSignUpController = require("../controller/user/userSignup");
 const userSignInController = require("../controller/user/userSignin");
 const userSignInGoogleController = require("../controller/user/userSigninGoogle");
@@ -26,11 +25,11 @@ const brandListUserController = require("../controller/brand/getUserListBrand");
 const productAllUserController = require("../controller/product/getAllProductUser");
 const getProductListController = require("../controller/product/getProductList");
 
-// use controller
-router.post('/signup', userSignUpController);
-router.post('/signin', userSignInController);
-router.post('/google', userSignInGoogleController);
-router.get('/user-details', authToken, userDetailsController);
+//#region user
+router.post("/signup", userSignUpController);
+router.post("/signin", userSignInController);
+router.post("/google", userSignInGoogleController);
+router.get("/user-details", authToken, userDetailsController);
 router.get("/userLogout", userLogout);
 //#endregion user
 

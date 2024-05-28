@@ -90,3 +90,9 @@ const API = {
 };
 
 export default API;
+
+
+
+
+
+// FIREBASE_API_KEY="AIzaSyCsvnbhBO3XjAs8oyiZQKgrhTEAEht5if4"

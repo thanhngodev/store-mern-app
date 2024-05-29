@@ -20,6 +20,6 @@ const PORT = process.env.PORT || 8080;
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log("Connected DB");
-    console.log("Servert listening to port " + PORT);
+    console.log("Server listening to port " + PORT);
   });
 });

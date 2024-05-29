@@ -1,4 +1,4 @@
-const backendUrl = "http://localhost:8080/api";
+const backendUrl = `${process.env.BACKEND_URL}/api`;
 
 const API = {
   signIn: {

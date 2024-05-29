@@ -1,4 +1,4 @@
-const backendUrl = `${process.env.BACKEND_URL}/api`;
+const backendUrl = `${process.env.REACT_APP_BACKEND_URL}api`;
 
 const API = {
   signIn: {
